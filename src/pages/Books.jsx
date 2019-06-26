@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import { fetchBooks } from '../actions/bookActions';
+import { fetchAllBooks } from '../actions/bookActions';
 
 class Books extends Component {
   componentWillMount() {
-    this.props.fetchBooks();
+    this.props.fetchAllBooks();
   }
   render() {
     const bookItems = this.props.books.map(book => <div key={book.id}>
@@ -26,8 +26,8 @@ const mapStateToProps = state => ({
 })
 
 Books.propTypes = {
-  fetchBooks: PropTypes.func.isRequired,
+  fetchAllBooks: PropTypes.func.isRequired,
   books: PropTypes.array.isRequired
 }
 
-export default connect(mapStateToProps, { fetchBooks })(Books);
+export default connect(mapStateToProps, { fetchAllBooks })(Books);

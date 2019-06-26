@@ -1,18 +1,17 @@
 import { FETCH_BOOKS } from '../actions/types';
 
 const initialState = {
-    items : [],
-    item: {}
+	items : [],
+	item: {}
 }
 
 export default (state = initialState, action) => {
-    switch(action.type){
-        case FETCH_BOOKS: 
-            return {
-                ...state, 
-                items: action.payload
-            }
-
-        default: return state;
-    }
+	switch(action.type){
+		case FETCH_BOOKS: 
+			return {
+				...state, 
+				items: action.payload
+			}
+		default: return state;
+	}
 }

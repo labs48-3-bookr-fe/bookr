@@ -1,3 +1,6 @@
 export const FETCH_BOOKS = 'FETCH_BOOKS';
+export const FETCH_A_BOOK = 'FETCH_A_BOOK';
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const SIGNUP_REQUEST = 'SIGNUP_REQUEST';
+export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
+

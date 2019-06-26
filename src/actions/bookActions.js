@@ -1,12 +1,12 @@
 import { FETCH_BOOKS } from './types';
+import { fetchBooks } from './helpers/book';
 
-const fetchBooks = () => (dispatch) => {
-    fetch('https://jsonplaceholder.typicode.com/posts')
-        .then(res => res.json())
-        .then(data => dispatch({
-            type: FETCH_BOOKS,
-            payload: data
-        }));
+export const fetchAllBooks = () => (dispatch) => {
+	fetchBooks()
+		.then(books => dispatch({
+				type: FETCH_BOOKS,
+				payload: books
+		}));
 }
 
-export { fetchBooks };
+

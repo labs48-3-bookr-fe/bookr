@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import { logout } from '../actions/authAction';
+
 import {
   Collapse,
   Navbar,
@@ -8,7 +11,7 @@ import {
   NavItem,
   NavLink} from 'reactstrap';
 
-export default class Header extends React.Component {
+class Header extends React.Component {
   constructor(props) {
     super(props);
 
@@ -30,12 +33,20 @@ export default class Header extends React.Component {
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
-              <NavItem>
-                <NavLink href="/login">Login</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="/signup">Signup</NavLink>
-              </NavItem>
+            { this.props.isAuthenticated ?
+              (<NavItem>
+                <NavLink href="/" onClick={this.props.logout}>Logout</NavLink>
+              </NavItem>)
+              :
+              <Fragment>
+                <NavItem>
+                  <NavLink href="/login">Login</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink href="/signup">Signup</NavLink>
+                </NavItem>
+              </Fragment>
+            }
             </Nav>
           </Collapse>
         </Navbar>
@@ -43,3 +54,11 @@ export default class Header extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.auth.isAuthenticated
+  }
+}
+
+export default connect(mapStateToProps, { logout })(Header);

@@ -1,7 +1,7 @@
-import { SIGNUP_REQUEST, LOGIN_REQUEST } from './types';
-import { registerUser, loginUser } from './helpers/user';
+import { SIGNUP_REQUEST, LOGIN_REQUEST, LOGOUT_REQUEST } from './types';
+import { registerUser, loginUser, logoutUser } from './helpers/user';
 
-const register = (userData) => (dispatch) => {
+export const register = (userData) => (dispatch) => {
   registerUser(userData)
     .then(user => dispatch({
         type: SIGNUP_REQUEST,
@@ -9,12 +9,20 @@ const register = (userData) => (dispatch) => {
     })); 
 }
 
-const login = (email, password) => (dispatch) => {
-  loginUser(email, password)
+export const login = (data, history) => (dispatch) => {
+  loginUser(data.email, data.password)
     .then(user => dispatch({
         type: LOGIN_REQUEST,
         payload: user
-    })); 
+    }))
+    .then(() => {
+      history.push('/books');
+    }); 
 }
 
-export { register, login };
+export const logout = () => (dispatch) => {
+  logoutUser();
+  dispatch({
+    type: LOGOUT_REQUEST
+  })
+}

@@ -1,6 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, CardText } from 'reactstrap';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -17,6 +18,8 @@ class LoginPage extends Component{
     this.state = {
       email: '',
       password: '',
+      gender: '',
+      food:'',
       inputFields: [
         {
             type: 'email',
@@ -35,13 +38,19 @@ class LoginPage extends Component{
       buttonTitle: 'Login',
     };
     this.onChange = (e) => {
-      this.setState({[e.target.name]: e.target.value});
+      e.target.type === 'select-one' ? this.setState({[e.target.name]: e.target.options[e.target.options.selectedIndex].value}) : this.setState({[e.target.name]: e.target.value});
     }
     this.onSubmit = (e) => {
       e.preventDefault();
       const data = {};
       this.state.inputFields.map(field => (data[field.name]= this.state[field.name]));
-      this.props.login(data);
+      this.props.login(data, this.props.history);
+    }
+  }
+
+  componentDidMount(){
+    if (this.props.isAuthenticated) {
+      return this.props.history.goBack();
     }
   }
 
@@ -81,4 +90,10 @@ LoginPage.propTypes = {
   login: PropTypes.func.isRequired,
 }
 
-export default connect(null, { login })(LoginPage);
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.auth.isAuthenticated
+  }
+}
+
+export default connect(mapStateToProps, { login })(withRouter(LoginPage));

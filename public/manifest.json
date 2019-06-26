@@ -1,6 +1,6 @@
 {
-  "short_name": "Bookr",
-  "name": "Bookr App",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",
