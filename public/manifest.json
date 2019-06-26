@@ -1,6 +1,16 @@
 {
+<<<<<<< HEAD
   "short_name": "React App",
   "name": "Create React App Sample",
+=======
+<<<<<<< HEAD
+  "short_name": "Bookr",
+  "name": "Bookr App",
+=======
+  "short_name": "React App",
+  "name": "Create React App Sample",
+>>>>>>> 4ef78081c7d154163e2bb3ece688df55c29a11bb
+>>>>>>> 4ebbc27bfc0d721f66c112486c5a60421fcde599
   "icons": [
     {
       "src": "favicon.ico",
