@@ -8,7 +8,11 @@ import {
   NavItem,
   NavLink} from 'reactstrap';
 
+<<<<<<< HEAD
 export default class Header extends React.Component {
+=======
+export default class Example extends React.Component {
+>>>>>>> 4ef78081c7d154163e2bb3ece688df55c29a11bb
   constructor(props) {
     super(props);
 
