@@ -28,6 +28,7 @@ export const register = (userData, history) => (dispatch) => {
 }
 
 export const login = (data, history) => (dispatch) => {
+  console.log('login data >>> >> >', data);
   instance.post('/login', data)
     .then(res =>{
       localStorage.setItem('token', res.data.token);
@@ -41,7 +42,7 @@ export const login = (data, history) => (dispatch) => {
       history.push('/books');
     })
     .catch((error) => {
-      console.log(error.response);
+      console.log('error response >>> >> >', error.response);
       if(error.response.status === 404){
         return dispatch(loginError([{msg: 'Invalid email and password combination'}]));
       }

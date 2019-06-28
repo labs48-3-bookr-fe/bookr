@@ -7,7 +7,6 @@ import {
   Collapse,
   Navbar,
   NavbarToggler,
-  NavbarBrand,
   Nav,
   NavItem,
   NavLink} from 'reactstrap';
@@ -30,7 +29,7 @@ class Header extends React.Component {
     return (
       <div>
         <Navbar color="light" light expand="md" className='px-5'>
-          <NavbarBrand><Link to={ this.props.isAuthenticated ? '/books' : '/'}>Bookr</Link></NavbarBrand>
+          <Link to={ this.props.isAuthenticated ? '/books' : '/'} className='navbar-brand'>Bookr</Link>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
@@ -41,10 +40,10 @@ class Header extends React.Component {
               :
               <Fragment>
                 <NavItem>
-                  <NavLink><Link to='/login'>Login</Link></NavLink>
+                  <Link to='/login' className='nav-link'>Login</Link>
                 </NavItem>
                 <NavItem>
-                  <NavLink><Link to='/signup'>Signup</Link></NavLink>
+                  <Link to='/signup' className='nav-link'>Signup</Link>
                 </NavItem>
               </Fragment>
             }

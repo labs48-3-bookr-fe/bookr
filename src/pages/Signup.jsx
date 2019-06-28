@@ -83,7 +83,7 @@ class SignupPage extends Component {
       <Fragment>
         <Header />
         <div className='py-5 d-flex justify-content-center align-middle'>
-          <div className='col-4 align-middle'>
+          <div className='col-sm-4 align-middle'>
             <Card>
               <CardHeader tag='h4'>Get access to unlimited book reviews</CardHeader>
                 <CardBody>

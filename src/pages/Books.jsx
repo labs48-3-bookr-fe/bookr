@@ -26,7 +26,7 @@ class Books extends Component {
       <Fragment>
           <Header />
           <CardDeck>
-            <div className="row p-5">
+            <div className="col-12 p-5">
               {this.props.books.map((book, key) => <BookCard key={key} book={book} onClick={this.onClick}/>)}
             </div>
           </CardDeck>

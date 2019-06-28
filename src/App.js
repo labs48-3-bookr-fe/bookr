@@ -14,7 +14,7 @@ function App() {
   return (
     <Provider store={store}>
       <Router>
-        <div className="App">
+        <div className="App pb-5">
           <Route exact path="/" render={
             (props) => (
                 <HomePage />

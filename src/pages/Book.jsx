@@ -40,8 +40,18 @@ class Book extends Component {
           <Header />
           <div className="row p-5">
             <BookCard book={book} onClick={this.onClick}/>
-            <div className="col-md-4">
-              <h3 className='pb-3'>Reviews</h3>
+            <div className="col-md-7 pl-md-5">
+              <h3 className='pb-3 pt-5 pt-md-0'>Reviews</h3>
+              <Form onSubmit={this.onSubmit} >
+                <h5 className='pb-3'>Give Your Review</h5>
+                <FormGroup>
+                  <Input type='textarea' name='review' rows='5' onChange={this.onChange}/>
+                </FormGroup>
+                <FormGroup>
+                  <Button outline color='danger'>Review</Button>
+                </FormGroup>
+              </Form>
+              <hr className='my-5'></hr>
               {
                 book.reviews ? 
                   book.reviews.map((review, key) => 
@@ -53,17 +63,6 @@ class Book extends Component {
                   ) 
                   : null
               }
-            </div>
-            <div className="col-md-4">
-              <Form onSubmit={this.onSubmit}>
-                <h3 className='pb-3'>Give Your Review</h3>
-                <FormGroup>
-                  <Input type='textarea' name='review' rows='5' onChange={this.onChange}/>
-                </FormGroup>
-                <FormGroup>
-                  <Button outline color='danger'>Review</Button>
-                </FormGroup>
-              </Form>
             </div>
           </div>
           <Footer />

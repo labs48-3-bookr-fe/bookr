@@ -38,20 +38,23 @@ class LoginPage extends Component{
       ],
       buttonTitle: 'Login',
     };
-    this.onChange = (e) => {
-      e.target.type === 'select-one' ? this.setState({[e.target.name]: e.target.options[e.target.options.selectedIndex].value}) : this.setState({[e.target.name]: e.target.value});
-    }
-    this.onSubmit = (e) => {
-      e.preventDefault();
-      const data = {};
-      this.state.inputFields.map(field => (data[field.name]= this.state[field.name]));
-      this.props.login(data, this.props.history);
-    }
-    this.onDismiss = () => {
-      this.setState({
-        visible: false,
-      })
-    }
+  }
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    const data = {};
+    this.state.inputFields.map(field => (data[field.name]= this.state[field.name]));
+    this.props.login(data, this.props.history);
+  }
+
+  onChange = (e) => {
+    e.target.type === 'select-one' ? this.setState({[e.target.name]: e.target.options[e.target.options.selectedIndex].value}) : this.setState({[e.target.name]: e.target.value});
+  }
+  
+  onDismiss = () => {
+    this.setState({
+      visible: false,
+    })
   }
 
   componentDidMount(){
@@ -71,7 +74,7 @@ class LoginPage extends Component{
       <Fragment>
         <Header />
         <div className='py-5 d-flex justify-content-center'>
-          <div className='col-4'>
+          <div className='col-sm-4'>
             <Card>
               <CardHeader tag='h4'>Get access to unlimited book reviews</CardHeader>
                 <CardBody>
