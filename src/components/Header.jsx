@@ -36,7 +36,7 @@ class Header extends React.Component {
             <Nav className="ml-auto" navbar>
             { this.props.isAuthenticated ?
               (<NavItem>
-                <NavLink><Link to='/' onClick={this.props.logout}>Logout</Link></NavLink>
+                <NavLink href='/' onClick={this.props.logout}>Logout</NavLink>
               </NavItem>)
               :
               <Fragment>
