@@ -1,7 +1,8 @@
 import { handleResponse } from './utils';
+import { signupError } from '../authAction';
 
-export const registerUser = (userData) => (
-  fetch('https://jsonplaceholder.typicode.com/posts', {
+export const registerUser = (userData) => (dispatch) => (
+  fetch('https://bookrr-app.herokuapp.com/api/users', {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
@@ -9,6 +10,10 @@ export const registerUser = (userData) => (
     body: JSON.stringify(userData)
   })
     .then(handleResponse)
+    .catch(e => {
+      console.log(e);
+      dispatch(signupError(e));
+    })
 );
 
 export const loginUser = (email, password) => (

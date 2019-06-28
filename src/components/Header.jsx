@@ -29,7 +29,7 @@ class Header extends React.Component {
     return (
       <div>
         <Navbar color="light" light expand="md" className='px-5'>
-          <NavbarBrand href="/">Bookr</NavbarBrand>
+          <NavbarBrand href={ this.props.isAuthenticated ? '/books' : '/'}>Bookr</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
