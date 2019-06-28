@@ -1,8 +1,19 @@
 import React, { Fragment, Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, CardText, Form, FormGroup, Button } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  CardText,
+  CardFooter,
+  Form,
+  FormGroup,
+  Button,
+  Alert,
+} from 'reactstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
 import { register } from '../actions/authAction';
 import Header from '../components/Header';
@@ -17,6 +28,7 @@ class SignupPage extends Component {
       lastName: '',
       email: '',
       password: '',
+      visible: true, 
       inputFields: [
         {
           type: 'text',
@@ -30,14 +42,12 @@ class SignupPage extends Component {
           name: 'lastName',
           placeholder: 'Enter Last Name',
           classname: 'form-item',
-          autofocus: 'autofocus',
         }, 
         {
             type: 'email',
             name: 'email',
             placeholder: 'Enter email',
             classname: 'form-item',
-            autofocus: 'autofocus',
         }, 
         {
             type: 'password',
@@ -55,7 +65,16 @@ class SignupPage extends Component {
       e.preventDefault();
       const data = {};
       this.state.inputFields.map(field => (data[field.name]= this.state[field.name]));
-      this.props.register(data);
+      this.props.register(data, this.props.history);
+    }
+    this.onDismiss = () => {
+      this.setState({ visible: false });
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.errors){
+      this.setState({ errors: nextProps.errors})
     }
   }
 
@@ -82,6 +101,17 @@ class SignupPage extends Component {
                   </Form>
                   <CardText className='text-center'>Already have an account? <Link to='/login'>Login</Link></CardText>
                 </CardBody>
+                <CardFooter>
+                  {
+                    this.props.errors.length ?
+                      <Alert color="danger" isOpen={this.state.visible} toggle={this.onDismiss}>
+                        <ul>
+                          { this.props.errors.map((error, key) => <li key={key} >{ error.msg }</li>)}
+                        </ul>
+                      </Alert>
+                    : null
+                  }
+                </CardFooter>
             </Card>
           </div>
         </div>
@@ -95,4 +125,10 @@ SignupPage.propTypes = {
   register: PropTypes.func.isRequired
 }
 
-export default connect(null, { register })(SignupPage);
+const mapStateToProps = state => {
+  return {
+    errors: state.auth.errors
+  }
+}
+
+export default connect(mapStateToProps, { register })(withRouter(SignupPage));

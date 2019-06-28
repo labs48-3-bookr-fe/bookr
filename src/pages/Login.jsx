@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, CardText } from 'reactstrap';
+import { Card, CardBody, CardHeader, CardText, CardFooter, Alert } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -20,19 +20,20 @@ class LoginPage extends Component{
       password: '',
       gender: '',
       food:'',
+      visible: true,
       inputFields: [
         {
-            type: 'email',
-            name: 'email',
-            placeholder: 'Enter email',
-            classname: 'form-item',
-            autofocus: 'autofocus',
+          type: 'email',
+          name: 'email',
+          placeholder: 'Enter email',
+          classname: 'form-item',
+          autofocus: 'autofocus',
         }, 
         {
-            type: 'password',
-            name: 'password',
-            placeholder: 'Enter password',
-            classname: 'form-item pl-0'
+          type: 'password',
+          name: 'password',
+          placeholder: 'Enter password',
+          classname: 'form-item pl-0'
         }
       ],
       buttonTitle: 'Login',
@@ -46,11 +47,22 @@ class LoginPage extends Component{
       this.state.inputFields.map(field => (data[field.name]= this.state[field.name]));
       this.props.login(data, this.props.history);
     }
+    this.onDismiss = () => {
+      this.setState({
+        visible: false,
+      })
+    }
   }
 
   componentDidMount(){
     if (this.props.isAuthenticated) {
       return this.props.history.goBack();
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.errors){
+      this.setState({ errors: nextProps.errors})
     }
   }
 
@@ -77,6 +89,18 @@ class LoginPage extends Component{
                   </Form>
                   <CardText className='text-center'>Do not have an account? <Link to='/signup'>Signup</Link></CardText>
                 </CardBody>
+                <CardFooter>
+                  {
+                    this.props.errors.length ? 
+                    <Alert color="danger" isOpen={this.state.visible} toggle={this.onDismiss}>
+                      <ul>
+                        { this.props.errors.map((error, key) => <li key={key} >{ error.msg }</li>)}
+                      </ul>
+                    </Alert>
+                    :
+                      null
+                  }
+                </CardFooter>
             </Card>
           </div>
         </div>
@@ -92,7 +116,8 @@ LoginPage.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
+    errors: state.auth.errors,
   }
 }
 

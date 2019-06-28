@@ -5,6 +5,7 @@ import HomePage from './pages/Home';
 import LoginPage from './pages/Login';
 import SignupPage from './pages/Signup';
 import Books from './pages/Books';
+import Book from './pages/Book';
 import PrivateRoute from './components/PrivateRoute';
 import store from './store';
 
@@ -18,10 +19,10 @@ function App() {
             (props) => (
                 <HomePage />
             )} />
-          <Route path="/login" component={LoginPage} />
-          <Route path="/signup" component={SignupPage} />
-          <PrivateRoute component={Books} path='/books' />
-          {/* <Route path="/books" component={Books} /> */}
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/signup" component={SignupPage} />
+          <PrivateRoute exact component={Books} path='/books' />
+          <PrivateRoute exact component={Book} path='/books/:id' />
         </div>
       </Router>
     </Provider>
