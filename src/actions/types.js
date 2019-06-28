@@ -8,4 +8,7 @@ export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const FETCH_BOOKS_ERROR = 'FETCH_BOOKS_ERROR';
 export const FETCH_BOOK = 'FETCH_BOOK';
 export const REVIEW_BOOK = 'REVIEW_BOOK';
+<<<<<<< HEAD
 export const DELETE_BOOK = 'DELETE_BOOK';
+=======
+>>>>>>> e043a03ebd10b2c7fd8e9ed61b602af3cb1940a0
