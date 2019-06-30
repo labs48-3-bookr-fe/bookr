@@ -1,11 +1,13 @@
-import { SIGNUP_REQUEST, LOGIN_REQUEST, LOGOUT_REQUEST, SIGNUP_ERROR, LOGIN_ERROR } from '../actions/types';
+import { SIGNUP_REQUEST, LOGIN_REQUEST, LOGOUT_REQUEST, SIGNUP_ERROR, LOGIN_ERROR, LOGIN_IN, SIGNIN_UP } from '../actions/types';
 
 const user = localStorage.getItem('bookrUser');
 
 const initialState = {
 	user: user ? { user } : {} ,
 	isAuthenticated: !!localStorage.getItem('token'),
-	errors: []
+	errors: [],
+	loginIn: false,
+	signinUp: false,
 }
 
 export default (state = initialState, action) => {
@@ -30,12 +32,26 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 			}
+
+		case LOGIN_IN: 
+			return {
+				...state, 
+				loginIn: true,
+			}
+		
+			case SIGNIN_UP: 
+				return {
+					...state, 
+					signinUp: true,
+				}
 		
 		case SIGNUP_ERROR:
 		case LOGIN_ERROR: 
 			return {
 				...state,
-				errors: action.payload
+				errors: action.payload,
+				loginIn: false,
+				signinUp: false,
 			}
 
 		default: return state;

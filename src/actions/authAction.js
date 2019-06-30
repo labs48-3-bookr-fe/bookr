@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SIGNUP_REQUEST, LOGIN_REQUEST, LOGOUT_REQUEST, SIGNUP_ERROR, LOGIN_ERROR } from './types';
+import { SIGNUP_REQUEST, LOGIN_REQUEST, LOGOUT_REQUEST, SIGNUP_ERROR, LOGIN_ERROR, LOGIN_IN, SIGNIN_UP } from './types';
 import { logoutUser } from './helpers/user';
 
 const instance = axios.create({
@@ -7,7 +7,7 @@ const instance = axios.create({
 });
 
 export const register = (userData, history) => (dispatch) => {
-  console.log(userData);
+  dispatch({ type: SIGNIN_UP });
   instance.post('/', userData)
     .then(res => {
       localStorage.setItem('token', res.data.token);
@@ -21,14 +21,19 @@ export const register = (userData, history) => (dispatch) => {
       history.push('/books');
     })
     .catch((error) => {
-      let err = error.response.data.error;
+      let err;
+      if(error.response){
+        err = error.response.data.error;
+      } else if(error instanceof Error){
+        err = [{msg: error.message}]
+      }
       err = typeof err === 'object' ? err : [{msg: err}]; 
       dispatch(signupError(err));
     });
 }
 
 export const login = (data, history) => (dispatch) => {
-  console.log('login data >>> >> >', data);
+  dispatch({ type: LOGIN_IN });
   instance.post('/login', data)
     .then(res =>{
       localStorage.setItem('token', res.data.token);
@@ -42,11 +47,14 @@ export const login = (data, history) => (dispatch) => {
       history.push('/books');
     })
     .catch((error) => {
-      console.log('error response >>> >> >', error.response);
-      if(error.response.status === 404){
-        return dispatch(loginError([{msg: 'Invalid email and password combination'}]));
+      let err;
+      if(error.response){
+        err = error.response.data.error;
+        if (error.response.status === 404)
+          return dispatch(loginError([{msg: 'Invalid email and password combination'}]));
+      } else if (error instanceof Error){
+        err = [{msg: error.message}]
       }
-      let err = error.response.data.error;
       err = typeof err === 'object' ? err : [{msg: err}]; 
       dispatch(loginError(err));
     }); 

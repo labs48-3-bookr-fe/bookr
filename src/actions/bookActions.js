@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_BOOKS, FETCH_BOOKS_ERROR, FETCH_BOOK, REVIEW_BOOK, DELETE_BOOK } from './types';
+import { FETCH_BOOKS, FETCH_BOOKS_ERROR, FETCH_BOOK, REVIEW_BOOK, DELETE_BOOK, GETTING_BOOK, GETTING_BOOKS } from './types';
 
 const instance = axios.create({
 	baseURL: 'https://bookrr-app.herokuapp.com/api',
@@ -14,6 +14,7 @@ instance.interceptors.request.use((config) => {
 });
 
 export const fetchAllBooks = () => (dispatch) => {
+  dispatch({type: GETTING_BOOKS});
 	instance.get('/books')
     .then(res => {
 			const books = typeof res.data === 'string' ? [] : res.data.books;
@@ -36,6 +37,7 @@ export const fetchBooksError = error => ({
 })
 
 export const fetchBook = (id) => (dispatch) => {
+  dispatch({type: GETTING_BOOK});
 	instance.get(`/books/${id}`)
     .then(res => {
 			const book = typeof res.data === 'string' ? [] : res.data.book;
@@ -63,6 +65,7 @@ export const reviewBook = (data, history) => (dispatch) => {
 			return res.data.review.bookId;
 		})
 		.then((id) => {
+      console.log('>>> book id returned >>>', id);
       history.push(`/books/${id}`);
     })
     .catch((error) => {

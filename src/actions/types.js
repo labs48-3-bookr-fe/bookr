@@ -9,3 +9,8 @@ export const FETCH_BOOKS_ERROR = 'FETCH_BOOKS_ERROR';
 export const FETCH_BOOK = 'FETCH_BOOK';
 export const REVIEW_BOOK = 'REVIEW_BOOK';
 export const DELETE_BOOK = 'DELETE_BOOK';
+export const LOGIN_IN = 'LOGIN_IN';
+export const SIGNIN_UP = 'SIGNIN_UP';
+export const GETTING_BOOK = 'GETTING_BOOK';
+export const GETTING_BOOKS = 'GETTING_BOOKS';
+

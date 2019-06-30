@@ -3,20 +3,19 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import { CardDeck } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
+import Loader from 'react-loader-spinner';
 import { fetchAllBooks, fetchBook } from '../actions/bookActions';
 import Header from '../components/Header';
 import BookCard from '../components/BookCard';
 import Footer from '../components/Footer';
 
 class Books extends Component {
-  constructor(props){
-    super(props);
-    this.onClick = (e) => {
-      const id = e.target.getAttribute('id');
-      this.props.fetchBook(id, this.props.history);
-      this.props.history.push(`/books/${id}`)
-    }
+  onClick = (e) => {
+    const id = e.target.getAttribute('id');
+    this.props.fetchBook(id, this.props.history);
+    this.props.history.push(`/books/${id}`)
   }
+
   componentWillMount() {
     this.props.fetchAllBooks();
   }
@@ -27,7 +26,13 @@ class Books extends Component {
           <Header />
           <CardDeck>
             <div className="col-12 p-5">
-              {this.props.books.map((book, key) => <BookCard key={key} book={book} onClick={this.onClick}/>)}
+            {
+              this.props.gettingBooks ?
+              <div className="col-sm-3 col-md-4 text-center">
+                <Loader type="Bars" color="#f83f1e" height={30} width={30} /> 
+                </div>
+                : this.props.books.map((book, key) => <BookCard key={key} book={book} onClick={this.onClick}/>)
+            }
             </div>
           </CardDeck>
           <Footer />
@@ -38,7 +43,8 @@ class Books extends Component {
 
 const mapStateToProps = state => {
   return {
-      books: state.books.items
+    books: state.books.items,
+    gettingBooks: state.books.gettingBooks,
   }
 }
 Books.propTypes = {

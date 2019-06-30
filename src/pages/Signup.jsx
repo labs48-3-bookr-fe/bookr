@@ -14,6 +14,7 @@ import {
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import Loader from 'react-loader-spinner';
 
 import { register } from '../actions/authAction';
 import Header from '../components/Header';
@@ -96,7 +97,13 @@ class SignupPage extends Component {
                         key={index}
                       />)}
                     <FormGroup>
-                      <Button outline color='danger' block>{this.state.buttonTitle}</Button>
+                      <Button outline color='danger' block>
+                        {
+                          this.props.signinUp ? 
+                          <Loader type="ThreeDots" color="#f83f1e" height={30} width={30} /> :
+                          this.state.buttonTitle
+                        }
+                      </Button>
                     </FormGroup>
                   </Form>
                   <CardText className='text-center'>Already have an account? <Link to='/login'>Login</Link></CardText>
@@ -127,7 +134,8 @@ SignupPage.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    errors: state.auth.errors
+    errors: state.auth.errors,
+    signinUp: state.auth.signinUp,
   }
 }
 

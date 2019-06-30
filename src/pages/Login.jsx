@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, CardText, CardFooter, Alert } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Loader from 'react-loader-spinner';
 import PropTypes from 'prop-types';
 
 import { login } from '../actions/authAction';
@@ -87,7 +88,11 @@ class LoginPage extends Component{
                         key={index}
                       />)}
                     <FormGroup>
-                      <Button outline color='danger' block>{this.state.buttonTitle}</Button>
+                      <Button outline color='danger' block>
+                        {this.props.loginIn ?
+                        <Loader type="ThreeDots" color="#f83f1e" height={30} width={30} /> :
+                         this.state.buttonTitle}
+                      </Button>
                     </FormGroup>
                   </Form>
                   <CardText className='text-center'>Do not have an account? <Link to='/signup'>Signup</Link></CardText>
@@ -120,6 +125,7 @@ LoginPage.propTypes = {
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.isAuthenticated,
+    loginIn: state.auth.loginIn,
     errors: state.auth.errors,
   }
 }
