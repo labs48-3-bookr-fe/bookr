@@ -1,8 +1,9 @@
 import React, { Fragment, Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, CardText } from 'reactstrap';
+import { Card, CardBody, CardHeader, CardText, CardFooter, Alert } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Loader from 'react-loader-spinner';
 import PropTypes from 'prop-types';
 
 import { login } from '../actions/authAction';
@@ -20,32 +21,41 @@ class LoginPage extends Component{
       password: '',
       gender: '',
       food:'',
+      visible: true,
       inputFields: [
         {
-            type: 'email',
-            name: 'email',
-            placeholder: 'Enter email',
-            classname: 'form-item',
-            autofocus: 'autofocus',
+          type: 'email',
+          name: 'email',
+          placeholder: 'Enter email',
+          classname: 'form-item',
+          autofocus: 'autofocus',
         }, 
         {
-            type: 'password',
-            name: 'password',
-            placeholder: 'Enter password',
-            classname: 'form-item pl-0'
+          type: 'password',
+          name: 'password',
+          placeholder: 'Enter password',
+          classname: 'form-item pl-0'
         }
       ],
       buttonTitle: 'Login',
     };
-    this.onChange = (e) => {
-      e.target.type === 'select-one' ? this.setState({[e.target.name]: e.target.options[e.target.options.selectedIndex].value}) : this.setState({[e.target.name]: e.target.value});
-    }
-    this.onSubmit = (e) => {
-      e.preventDefault();
-      const data = {};
-      this.state.inputFields.map(field => (data[field.name]= this.state[field.name]));
-      this.props.login(data, this.props.history);
-    }
+  }
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    const data = {};
+    this.state.inputFields.map(field => (data[field.name]= this.state[field.name]));
+    this.props.login(data, this.props.history);
+  }
+
+  onChange = (e) => {
+    e.target.type === 'select-one' ? this.setState({[e.target.name]: e.target.options[e.target.options.selectedIndex].value}) : this.setState({[e.target.name]: e.target.value});
+  }
+  
+  onDismiss = () => {
+    this.setState({
+      visible: false,
+    })
   }
 
   componentDidMount(){
@@ -54,12 +64,18 @@ class LoginPage extends Component{
     }
   }
 
+  componentWillReceiveProps(nextProps){
+    if(nextProps.errors){
+      this.setState({ errors: nextProps.errors})
+    }
+  }
+
   render(){
     return (
       <Fragment>
         <Header />
         <div className='py-5 d-flex justify-content-center'>
-          <div className='col-4'>
+          <div className='col-sm-4'>
             <Card>
               <CardHeader tag='h4'>Get access to unlimited book reviews</CardHeader>
                 <CardBody>
@@ -72,11 +88,27 @@ class LoginPage extends Component{
                         key={index}
                       />)}
                     <FormGroup>
-                      <Button outline color='danger' block>{this.state.buttonTitle}</Button>
+                      <Button outline color='danger' block>
+                        {this.props.loginIn ?
+                        <Loader type="ThreeDots" color="#f83f1e" height={30} width={30} /> :
+                         this.state.buttonTitle}
+                      </Button>
                     </FormGroup>
                   </Form>
                   <CardText className='text-center'>Do not have an account? <Link to='/signup'>Signup</Link></CardText>
                 </CardBody>
+                <CardFooter>
+                  {
+                    this.props.errors.length ? 
+                    <Alert color="danger" isOpen={this.state.visible} toggle={this.onDismiss}>
+                      <ul>
+                        { this.props.errors.map((error, key) => <li key={key} >{ error.msg }</li>)}
+                      </ul>
+                    </Alert>
+                    :
+                      null
+                  }
+                </CardFooter>
             </Card>
           </div>
         </div>
@@ -92,7 +124,9 @@ LoginPage.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
+    loginIn: state.auth.loginIn,
+    errors: state.auth.errors,
   }
 }
 

@@ -1,8 +1,20 @@
 import React, { Fragment, Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, CardText, Form, FormGroup, Button } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  CardText,
+  CardFooter,
+  Form,
+  FormGroup,
+  Button,
+  Alert,
+} from 'reactstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import Loader from 'react-loader-spinner';
 
 import { register } from '../actions/authAction';
 import Header from '../components/Header';
@@ -17,6 +29,7 @@ class SignupPage extends Component {
       lastName: '',
       email: '',
       password: '',
+      visible: true, 
       inputFields: [
         {
           type: 'text',
@@ -30,14 +43,12 @@ class SignupPage extends Component {
           name: 'lastName',
           placeholder: 'Enter Last Name',
           classname: 'form-item',
-          autofocus: 'autofocus',
         }, 
         {
             type: 'email',
             name: 'email',
             placeholder: 'Enter email',
             classname: 'form-item',
-            autofocus: 'autofocus',
         }, 
         {
             type: 'password',
@@ -55,7 +66,16 @@ class SignupPage extends Component {
       e.preventDefault();
       const data = {};
       this.state.inputFields.map(field => (data[field.name]= this.state[field.name]));
-      this.props.register(data);
+      this.props.register(data, this.props.history);
+    }
+    this.onDismiss = () => {
+      this.setState({ visible: false });
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.errors){
+      this.setState({ errors: nextProps.errors})
     }
   }
 
@@ -64,7 +84,7 @@ class SignupPage extends Component {
       <Fragment>
         <Header />
         <div className='py-5 d-flex justify-content-center align-middle'>
-          <div className='col-4 align-middle'>
+          <div className='col-sm-4 align-middle'>
             <Card>
               <CardHeader tag='h4'>Get access to unlimited book reviews</CardHeader>
                 <CardBody>
@@ -77,11 +97,28 @@ class SignupPage extends Component {
                         key={index}
                       />)}
                     <FormGroup>
-                      <Button outline color='danger' block>{this.state.buttonTitle}</Button>
+                      <Button outline color='danger' block>
+                        {
+                          this.props.signinUp ? 
+                          <Loader type="ThreeDots" color="#f83f1e" height={30} width={30} /> :
+                          this.state.buttonTitle
+                        }
+                      </Button>
                     </FormGroup>
                   </Form>
                   <CardText className='text-center'>Already have an account? <Link to='/login'>Login</Link></CardText>
                 </CardBody>
+                <CardFooter>
+                  {
+                    this.props.errors.length ?
+                      <Alert color="danger" isOpen={this.state.visible} toggle={this.onDismiss}>
+                        <ul>
+                          { this.props.errors.map((error, key) => <li key={key} >{ error.msg }</li>)}
+                        </ul>
+                      </Alert>
+                    : null
+                  }
+                </CardFooter>
             </Card>
           </div>
         </div>
@@ -95,4 +132,11 @@ SignupPage.propTypes = {
   register: PropTypes.func.isRequired
 }
 
-export default connect(null, { register })(SignupPage);
+const mapStateToProps = state => {
+  return {
+    errors: state.auth.errors,
+    signinUp: state.auth.signinUp,
+  }
+}
+
+export default connect(mapStateToProps, { register })(withRouter(SignupPage));

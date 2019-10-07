@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1b21755d-1f71-4d68-a121-9e54ac6836a1/deploy-status)](https://app.netlify.com/sites/bookrr/deploys)
+
 Bookr is your source for all things Text Book. Picture the AirBNB of text books, a social platform for peer reviewed text books.
 
 ## Available Scripts

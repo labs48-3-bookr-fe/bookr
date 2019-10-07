@@ -1,33 +1,55 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import { fetchAllBooks } from '../actions/bookActions';
+import { CardDeck } from 'reactstrap';
+import { withRouter } from 'react-router-dom';
+import Loader from 'react-loader-spinner';
+import { fetchAllBooks, fetchBook } from '../actions/bookActions';
+import Header from '../components/Header';
+import BookCard from '../components/BookCard';
+import Footer from '../components/Footer';
 
 class Books extends Component {
+  onClick = (e) => {
+    const id = e.target.getAttribute('id');
+    this.props.fetchBook(id, this.props.history);
+    this.props.history.push(`/books/${id}`)
+  }
+
   componentWillMount() {
     this.props.fetchAllBooks();
   }
+
   render() {
-    const bookItems = this.props.books.map(book => <div key={book.id}>
-      <h3>{book.title}</h3>
-      <p>{book.body}</p>
-    </div>)
     return (
       <Fragment>
-        <h2>Books</h2>
-        {bookItems}
+          <Header />
+          <CardDeck>
+            <div className="col-12 p-5">
+            {
+              this.props.gettingBooks ?
+              <div className="col-sm-3 col-md-4 text-center">
+                <Loader type="Bars" color="#f83f1e" height={30} width={30} /> 
+                </div>
+                : this.props.books.map((book, key) => <BookCard key={key} book={book} onClick={this.onClick}/>)
+            }
+            </div>
+          </CardDeck>
+          <Footer />
       </Fragment>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  books: state.books.items
-})
-
+const mapStateToProps = state => {
+  return {
+    books: state.books.items,
+    gettingBooks: state.books.gettingBooks,
+  }
+}
 Books.propTypes = {
   fetchAllBooks: PropTypes.func.isRequired,
   books: PropTypes.array.isRequired
 }
 
-export default connect(mapStateToProps, { fetchAllBooks })(Books);
+export default connect(mapStateToProps, { fetchAllBooks, fetchBook })(withRouter(Books));
